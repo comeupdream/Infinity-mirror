@@ -48,12 +48,14 @@ function powerOn(): void {
   S.powered = true;
   ensureAudio(); powerThunk();
   stage.classList.remove('unit-off');
+  stage.classList.add('striking');            // M-8 — beam arcs with the lamp
   unit.classList.add('booting');
   pwrBtn.classList.add('on');
   pwrBtn.setAttribute('aria-pressed', 'true');
   tunnel.powered = true;
   tunnel.boot(() => unit.classList.remove('booting'));
-  setTimeout(() => unit.classList.remove('booting'), 2000);
+  setTimeout(() => unit.classList.remove('booting'), 2400);
+  setTimeout(() => stage.classList.remove('striking'), 1800);
 }
 function powerOff(): void {
   if (!S.powered) return;
@@ -228,8 +230,16 @@ document.addEventListener('im:vehicle-resolved', ((e: CustomEvent<ResolvedVehicl
 }) as EventListener);
 
 /* ── render loop ── */
+const mirrorEl = document.querySelector<HTMLElement>('.mirrorwrap');
+let lastHal = '';
 function loop(now: number): void {
   tunnel.frame(now);
+  // M-7 — housing picks up the lamp's spill
+  const hal = S.powered ? tunnel.halationCSS() : 'rgba(0,0,0,0)';
+  if (hal !== lastHal && mirrorEl) {
+    mirrorEl.style.setProperty('--halation', hal);
+    lastHal = hal;
+  }
   if (activePanel === 'lab') labEngine.frame(now);
   requestAnimationFrame(loop);
 }

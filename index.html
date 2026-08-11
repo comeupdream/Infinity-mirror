@@ -38,7 +38,23 @@
 
   .deck{display:grid;grid-template-columns:1fr 172px;gap:14px;align-items:stretch;}
   @media(max-width:660px){.deck{grid-template-columns:1fr;}}
-  .mirrorwrap{position:relative;min-width:0;min-height:300px;}
+  .mirrorwrap{position:relative;min-width:0;min-height:300px;
+    /* M-7 halation — the engine writes --halation every mode change */
+    box-shadow:0 0 42px -8px var(--halation, rgba(0,0,0,0));
+    transition:box-shadow .5s;}
+  /* M-8 — the road beam strikes like an HID: arc, stutter, settle */
+  .striking .beamcast{animation:hidstrike 1.75s steps(1,end) both;}
+  @keyframes hidstrike{
+    0%{opacity:.6;filter:blur(10px) hue-rotate(28deg);}
+    3%{opacity:0;} 8%{opacity:.5;filter:blur(10px) hue-rotate(24deg);}
+    11%{opacity:.02;} 15%{opacity:.44;filter:blur(10px) hue-rotate(18deg);}
+    18%{opacity:.06;} 30%{opacity:.34;filter:blur(10px) hue-rotate(10deg);}
+    100%{opacity:.16;filter:blur(10px) hue-rotate(0deg);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .striking .beamcast{animation:none;}
+    .mirrorwrap{transition:none;}
+  }
   canvas#tunnel{position:absolute;inset:0;width:100%;height:100%;z-index:1;}
   .standbyView{position:absolute;inset:0;display:flex;flex-direction:column;gap:6px;
     align-items:center;justify-content:center;opacity:0;transition:opacity .5s;pointer-events:none;z-index:3;}

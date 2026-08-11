@@ -20,10 +20,18 @@ export type ElementRole =
 export interface LampElement {
   id: string;
   role: ElementRole;
+  /** how the glass is built:
+      'panel'    — filled lens area with receding outline reflections
+      'sunburst' — radial mirror spokes from a hot orb (the Genki cut:
+                   spokes rotate slightly per bounce → pinwheel moiré)
+      'halo'     — stroke-only ring, receding (teardrop trunk rings) */
+  kind?: 'panel' | 'sunburst' | 'halo';
   /** closed SVG path in blueprint coords */
   d: string;
   /** infinity depth: how many receding reflections this pod shows (0 = flat panel) */
   depth?: number;
+  /** sunburst only: radial spoke count (default 24) */
+  spokes?: number;
   /** vanishing point override, blueprint coords (default: path bbox centre) */
   vanish?: [number, number];
   /** sequential order among this lamp's turn elements (0 fires first) —
@@ -36,10 +44,12 @@ export interface LampElement {
 
 export interface LedRun {
   id: string;
-  role: 'drl' | 'turn';
+  role: 'drl' | 'turn' | 'tail';
   /** polyline the discrete LEDs sit on, in order of the chase direction */
   pts: [number, number][];
   leds: number;
+  /** emitter color override — e.g. the all-red Genki floor strips */
+  tint?: [number, number, number];
 }
 
 export interface DimLine {

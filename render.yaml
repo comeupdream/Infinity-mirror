@@ -1,0 +1,19 @@
+# Render Blueprint — static site for Infinity Mirror Works.
+# Same shape as the MangoMatrix deploy: free static hosting, CDN-backed.
+services:
+  - type: web
+    name: infinity-mirror
+    runtime: static
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+    routes:
+      - type: rewrite
+        source: /lab
+        destination: /lab.html
+      - type: rewrite
+        source: /store
+        destination: /store.html

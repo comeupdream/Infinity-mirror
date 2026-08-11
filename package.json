@@ -1,0 +1,16 @@
+{
+  "name": "infinity-mirror",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Infinity Mirror Works — flagship UI + store for custom infinity-mirror headlights and tail lights. The site lives inside the lamp.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.4",
+    "vite": "^5.4.8"
+  }
+}

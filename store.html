@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>STORE — Infinity Mirror Works</title>
+    <meta name="theme-color" content="#050607" />
+    <meta name="description" content="Infinity-mirror tail lights, headlight commissions, halos, sequential modules. VIN-matched fitment, honest badges." />
+    <style>body{background:#050607;margin:0;}</style>
+  </head>
+  <body>
+<style>
+  .storebar{width:min(1200px,100%);display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+  .storebar .wordmark{font-family:var(--font-disp);font-weight:800;font-size:clamp(17px,2.6vw,24px);
+    letter-spacing:.005em;text-transform:uppercase;color:var(--etch);text-decoration:none;}
+  .storebar .wordmark .inf{color:var(--amber);text-shadow:0 0 14px var(--amber-glow);}
+  .storebar .jp{font-size:10px;letter-spacing:.32em;color:var(--silk);}
+
+  .fitstrip{width:min(1200px,100%);background:linear-gradient(180deg,var(--hous-1),var(--hous-0));
+    border:1px solid var(--edge-lo);border-radius:14px;padding:16px 18px;
+    box-shadow:0 1px 0 var(--edge-hi) inset;}
+  .fitstrip .row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:10px;}
+  .fitstrip h1{font-family:var(--font-disp);font-weight:800;font-size:15px;letter-spacing:.02em;
+    text-transform:uppercase;margin:0;color:var(--etch);}
+  .garline{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+  .garchip{font-size:10px;letter-spacing:.14em;padding:5px 10px;border-radius:20px;border:1px solid var(--ok);color:var(--ok);}
+  .garchip.none{border-color:var(--edge-lo);color:var(--silk);}
+  .fitsonly{font-size:10px;letter-spacing:.14em;}
+  .fitsonly[aria-pressed="true"]{color:var(--ok);border-color:var(--ok);text-shadow:0 0 8px var(--ok-glow);}
+
+  .shelf{width:min(1200px,100%);display:grid;grid-template-columns:1fr 300px;gap:14px;align-items:start;}
+  @media(max-width:900px){.shelf{grid-template-columns:1fr;}}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;}
+  .prod{border:1px solid var(--edge-lo);border-radius:12px;padding:16px;background:var(--hous-1);
+    display:flex;flex-direction:column;gap:9px;box-shadow:0 1px 0 var(--edge-hi) inset;}
+  .prod .nm{font-size:13px;font-weight:700;color:var(--etch);letter-spacing:.03em;line-height:1.4;}
+  .prod .sku{font-size:9px;letter-spacing:.18em;color:var(--silk);}
+  .prod .pr{font-family:var(--font-pixel);font-size:24px;color:var(--amber);text-shadow:0 0 8px var(--amber-glow);}
+  .prod .desc{font-size:11.5px;color:var(--silk);line-height:1.55;flex:1;}
+  .prod .fit{font-size:9px;letter-spacing:.14em;padding:3px 8px;border-radius:20px;border:1px solid;align-self:flex-start;}
+  .fit.yes{color:var(--ok);border-color:var(--ok);}
+  .fit.no{color:var(--tail);border-color:var(--tail);opacity:.75;}
+  .fit.build{color:var(--bp);border-color:var(--bp);}
+  .prod select{font-family:var(--font-mono);font-size:11px;background:var(--lens);color:var(--drl);
+    border:1px solid var(--edge-lo);border-radius:7px;padding:7px 8px;}
+  .prod .addrow{display:flex;gap:8px;align-items:center;}
+  .prod .add{flex:1;justify-content:center;font-weight:700;color:var(--etch);}
+  .prod .add:hover{border-color:var(--amber);color:var(--amber);}
+  .prod .bplink{font-size:9px;letter-spacing:.14em;color:var(--bp);text-decoration:none;}
+  .prod .bplink:hover{text-shadow:0 0 8px var(--bp-glow);}
+
+  /* build sheet (cart) */
+  .sheetcard{position:sticky;top:16px;background:linear-gradient(180deg,var(--hous-1),var(--hous-0));
+    border:1px solid var(--edge-lo);border-radius:14px;padding:16px 18px;
+    box-shadow:0 0 0 1px rgba(255,160,40,.14),0 1px 0 var(--edge-hi) inset;display:flex;flex-direction:column;gap:10px;}
+  .sheetcard h2{font-family:var(--font-pixel);font-size:24px;font-weight:400;margin:0;color:var(--amber);
+    text-shadow:0 0 10px var(--amber-glow);letter-spacing:.04em;}
+  .sheetcard .sub{font-size:9px;letter-spacing:.2em;color:var(--silk);}
+  .lines{display:flex;flex-direction:column;gap:8px;max-height:320px;overflow:auto;}
+  .line{display:flex;align-items:center;gap:8px;border:1px solid var(--edge-lo);border-radius:8px;
+    padding:8px 10px;background:var(--hous-2);}
+  .line .n{flex:1;font-size:10.5px;color:var(--etch);line-height:1.4;}
+  .line .n small{display:block;color:var(--silk);letter-spacing:.08em;}
+  .line .q{display:flex;gap:4px;align-items:center;}
+  .line .q button{width:22px;height:22px;font-size:12px;padding:0;border-radius:5px;}
+  .line .amt{font-family:var(--font-pixel);font-size:16px;color:var(--amber);white-space:nowrap;}
+  .total{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--edge-lo);padding-top:10px;}
+  .total b{font-family:var(--font-pixel);font-size:26px;font-weight:400;color:var(--amber);text-shadow:0 0 10px var(--amber-glow);}
+  .sheetcard .cta{margin-top:4px;justify-content:center;}
+  .copyok{font-size:10px;letter-spacing:.14em;color:var(--ok);min-height:14px;}
+  .empty{font-size:11px;color:var(--silk);letter-spacing:.08em;padding:14px 0;text-align:center;}
+</style>
+
+<div class="stage" id="stage">
+  <div class="storebar">
+    <a class="wordmark" href="/">◀ INFINITY <span class="inf">MIRROR</span> WORKS</a>
+    <span class="jp">ストア ・ STORE ・ 光</span>
+  </div>
+
+  <section class="fitstrip" aria-label="Fitment">
+    <div class="row">
+      <h1>Your chassis</h1>
+      <div class="garline">
+        <span class="garchip none" id="garChip">NO VEHICLE SAVED</span>
+        <button class="hbtn fitsonly" id="fitsOnly" aria-pressed="false">✓ FITS-ONLY</button>
+      </div>
+    </div>
+    <div id="fitmentMount"></div>
+  </section>
+
+  <div class="shelf">
+    <div class="grid" id="grid"></div>
+
+    <aside class="sheetcard" aria-label="Build sheet">
+      <h2>BUILD SHEET</h2>
+      <span class="sub">DRAFT QUOTE ・ 見積り</span>
+      <div class="lines" id="lines"></div>
+      <div class="total"><span style="font-size:10px;letter-spacing:.2em;color:var(--silk);">PARTS TOTAL</span><b id="total">$0</b></div>
+      <a class="cta" id="quoteBtn" href="#">REQUEST BUILD QUOTE →</a>
+      <button class="cta wire" id="copyBtn">COPY SHEET</button>
+      <span class="copyok" id="copyOk"></span>
+      <span style="font-size:9.5px;color:var(--silk);line-height:1.6;">
+        Checkout is a draft quote — build queue + shipping confirmed by reply.
+        Color / flash modes ship on a show-only circuit.</span>
+    </aside>
+  </div>
+
+  <footer>
+    <span>INFINITY MIRROR WORKS ・ STORE</span>
+    <span>FITMENT BADGES REQUIRE POSITIVE EVIDENCE</span>
+    <span>光</span>
+  </footer>
+</div>
+
+<script type="module" src="/src/store/main.ts"></script>
+  </body>
+</html>

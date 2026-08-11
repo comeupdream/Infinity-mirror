@@ -1,15 +1,23 @@
 # Render Blueprint — static site for Infinity Mirror Works.
-# Same shape as the MangoMatrix deploy: free static hosting, CDN-backed.
+# Deploy: Render dashboard → New + → Blueprint → pick this repo + branch.
+# Node version comes from .node-version; no environment variables required —
+# the site is fully static (fonts inlined, audio synthesized, no APIs).
 services:
   - type: web
     name: infinity-mirror
     runtime: static
-    buildCommand: npm ci && npm run build
+    # --include=dev is load-bearing: vite + tsc live in devDependencies,
+    # and any NODE_ENV=production in the build env would otherwise skip them.
+    buildCommand: npm ci --include=dev && npm run build
     staticPublishPath: dist
     headers:
       - path: /*
         name: X-Frame-Options
         value: DENY
+      # Vite content-hashes everything under /assets — cache forever.
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
     routes:
       - type: rewrite
         source: /lab

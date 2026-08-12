@@ -9,6 +9,7 @@ import type { LampMode } from '../lamp/types';
 import { ensureAudio, relayTick } from '../ui/sound';
 import { L } from '../ui/lang';
 import { initLang } from '../ui/lang';
+import { initAccent } from '../ui/accent';
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string): T =>
   document.getElementById(id) as T;
@@ -62,3 +63,4 @@ function loop(now: number): void {
 requestAnimationFrame(loop);
 
 initLang();
+initAccent();

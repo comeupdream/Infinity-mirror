@@ -17,7 +17,8 @@
 
   /* LED emitters */
   --drl:#eaf6ff;      --drl-glow:rgba(170,225,255,.55);
-  --amber:#ffa028;    --amber-glow:rgba(255,160,40,.5);
+  --acc:#ff4fa8;      --acc-glow:rgba(255,79,168,.52);   /* scheme-controlled */
+  --amber:#ffa028;    --amber-glow:rgba(255,160,40,.5);  /* fixed orange pops */
   --tail:#ff2038;     --tail-glow:rgba(255,32,56,.5);
   --bp:#4fd8ff;       --bp-glow:rgba(79,216,255,.45);   /* blueprint cyan */
   --show:#b06bff;     --show-glow:rgba(176,107,255,.5);
@@ -160,8 +161,8 @@ body{margin:0;}
   background:var(--btn-face);color:var(--etch);border:1px solid var(--edge-lo);
   border-radius:6px;padding:7px 11px;box-shadow:0 1px 0 var(--edge-hi) inset;}
 .preset:hover{border-color:var(--silk);}
-.preset[aria-pressed="true"]{color:var(--amber);border-color:var(--amber);
-  text-shadow:0 0 8px var(--amber-glow);}
+.preset[aria-pressed="true"]{color:var(--acc);border-color:var(--acc);
+  text-shadow:0 0 8px var(--acc-glow);}
 
 /* content cards */
 .content{width:min(1060px,100%);}
@@ -173,8 +174,8 @@ body{margin:0;}
   box-shadow:0 1px 0 var(--edge-hi) inset;}
 .card h2{font-family:var(--font-disp);font-weight:800;letter-spacing:-.02em;
   text-transform:uppercase;margin:0 0 4px;font-size:clamp(20px,3vw,26px);color:var(--etch);}
-.eyebrow{font-size:11px;letter-spacing:.28em;color:var(--amber);
-  text-shadow:0 0 8px var(--amber-glow);margin-bottom:10px;}
+.eyebrow{font-size:11px;letter-spacing:.28em;color:var(--acc);
+  text-shadow:0 0 8px var(--acc-glow);margin-bottom:10px;}
 .card p{color:var(--silk);line-height:1.65;max-width:64ch;font-size:14px;}
 .feat{list-style:none;padding:0;margin:16px 0 0;display:grid;
   grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;}
@@ -183,8 +184,8 @@ body{margin:0;}
 .feat .d{color:var(--silk);font-size:12px;margin-top:3px;line-height:1.5;}
 .cta{display:inline-flex;align-items:center;gap:9px;margin-top:18px;
   font-family:var(--font-mono);font-weight:700;letter-spacing:.08em;font-size:13px;
-  text-decoration:none;color:#0a0c0e;background:var(--amber);border:0;cursor:pointer;
-  padding:12px 20px;border-radius:8px;box-shadow:0 0 20px var(--amber-glow);}
+  text-decoration:none;color:#0a0c0e;background:var(--acc);border:0;cursor:pointer;
+  padding:12px 20px;border-radius:8px;box-shadow:0 0 20px var(--acc-glow);}
 .cta:hover{filter:brightness(1.08);}
 .cta.ice{background:var(--drl);box-shadow:0 0 20px var(--drl-glow);}
 .cta.red{background:var(--tail);color:#fff;box-shadow:0 0 20px var(--tail-glow);}
@@ -232,4 +233,23 @@ textarea, input[type="text"], input[type="email"], input[type="search"] { cursor
       a step smaller so it stays an accent, never a headline ── */
 html[data-lang="en"] .jx-acc{font-size:.86em;letter-spacing:.14em;opacity:.92;}
 .langbtn{font-size:10px;letter-spacing:.18em;padding:5px 10px;min-width:44px;}
-.langbtn[aria-pressed="true"]{color:var(--amber);border-color:var(--amber);}
+.langbtn[aria-pressed="true"]{color:var(--acc);border-color:var(--acc);}
+
+/* ── accent schemes — three liveries on one housing ──────────────
+   pink (default) / classic amber / breathe (cycles the three
+   primaries). @property lets the breathe keyframes interpolate;
+   without support the cycle steps, which still reads as breathing. */
+@property --acc { syntax: '<color>'; inherits: true; initial-value: #ff4fa8; }
+@property --acc-glow { syntax: '<color>'; inherits: true; initial-value: rgba(255,79,168,.52); }
+:root{ transition: --acc .5s ease, --acc-glow .5s ease; }
+:root[data-accent="classic"]{ --acc:#ffa028; --acc-glow:rgba(255,160,40,.5); }
+:root[data-accent="breathe"]{ animation: accbreathe 14s ease-in-out infinite; }
+@keyframes accbreathe{
+  0%, 100% { --acc:#ff4fa8; --acc-glow:rgba(255,79,168,.52); }
+  33%      { --acc:#4fd8ff; --acc-glow:rgba(79,216,255,.5); }
+  66%      { --acc:#ffa028; --acc-glow:rgba(255,160,40,.5); }
+}
+@media (prefers-reduced-motion: reduce){
+  :root[data-accent="breathe"]{ animation: none; }
+}
+.accdot{ color:var(--acc); text-shadow:0 0 8px var(--acc-glow); }

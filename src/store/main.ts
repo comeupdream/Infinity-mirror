@@ -14,6 +14,7 @@ import {
 import { ensureAudio, relayTick } from '../ui/sound';
 import { L } from '../ui/lang';
 import { initLang } from '../ui/lang';
+import { initAccent } from '../ui/accent';
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string): T =>
   document.getElementById(id) as T;
@@ -133,3 +134,4 @@ renderSheet();
 document.addEventListener('im:lang', () => { renderGarage(); renderGrid(); renderSheet(); });
 
 initLang();
+initAccent();

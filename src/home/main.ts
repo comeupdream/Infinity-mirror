@@ -12,6 +12,7 @@ import { readGarage, type ResolvedVehicle } from '../fitment/ymm';
 import { CATALOG, fitsChassis, fmtPrice, pDesc, pEta, pName } from '../store/catalog';
 import { ensureAudio, powerThunk, relayTick } from '../ui/sound';
 import { currentLang, initLang, L } from '../ui/lang';
+import { initAccent } from '../ui/accent';
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string): T =>
   document.getElementById(id) as T;
@@ -263,3 +264,4 @@ function loop(now: number): void {
 requestAnimationFrame(loop);
 
 initLang();
+initAccent();

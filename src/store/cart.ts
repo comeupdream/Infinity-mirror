@@ -5,7 +5,7 @@
    Checkout is a draft quote request (mailto + copyable sheet) — no
    payment processor is wired yet, and the sheet says so honestly. */
 
-import { bySlug, fmtUSD, type Product } from './catalog';
+import { bySlug, fmtUSD, SHIPPING_CENTS, type Product } from './catalog';
 
 const KEY = 'im-cart';
 /** Configure before launch: where quote requests land. */
@@ -57,6 +57,20 @@ export function cartTotal(): number {
   return cartLines().reduce((n, l) => n + lineUnitPrice(l) * l.qty, 0);
 }
 
+/** flat per-order shipping, straight off the published price list */
+export function cartShipping(): number {
+  return cartLines().length ? SHIPPING_CENTS : 0;
+}
+
+export function cartGrand(): number {
+  return cartTotal() + cartShipping();
+}
+
+/** any line whose price is a conversation, not a number */
+export function cartHasQuoteItems(): boolean {
+  return cartLines().some((l) => lineUnitPrice(l) === 0);
+}
+
 export function addToCart(p: Product, option?: string): void {
   const map = read();
   const key = option ? `${p.slug}::${option}` : p.slug;
@@ -91,17 +105,21 @@ export function buildSheetText(garageLabel: string | null): string {
   const rows = lines.map((l) => {
     const p = bySlug(l.slug)!;
     const opt = l.option ? ` [${l.option}]` : '';
-    return `${l.qty}× ${p.name}${opt} (${p.sku}) — ${fmtUSD(lineUnitPrice(l) * l.qty)}`;
+    const unit = lineUnitPrice(l);
+    return `${l.qty}× ${p.name}${opt} (${p.sku}) — ${unit ? fmtUSD(unit * l.qty) : 'BY QUOTE'}`;
   });
   return [
     'INFINITY MIRROR WORKS — BUILD SHEET',
     '───────────────────────────────────',
     ...rows,
     '───────────────────────────────────',
-    `TOTAL (PARTS): ${fmtUSD(cartTotal())}`,
+    `PARTS: ${fmtUSD(cartTotal())}${cartHasQuoteItems() ? ' + by-quote items' : ''}`,
+    `SHIPPING (FLAT): ${fmtUSD(cartShipping())}`,
+    `TOTAL: ${fmtUSD(cartGrand())}`,
     garageLabel ? `VEHICLE: ${garageLabel}` : 'VEHICLE: (add your chassis / VIN)',
     '',
-    'Draft quote request — shipping + build queue confirmed by reply.',
+    'Taillights not included — I will ship my cores. 1-year warranty.',
+    'Draft quote request — build queue confirmed by reply.',
   ].join('\n');
 }
 

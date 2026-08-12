@@ -32,6 +32,9 @@
   .storebar .wordmark .inf{color:var(--amber);text-shadow:0 0 14px var(--amber-glow);}
   .storebar .jp{font-size:10px;letter-spacing:.32em;color:var(--silk);}
 
+  .terms{margin-top:10px;font-size:15px;letter-spacing:.08em;color:var(--amber);opacity:.85;}
+  .terms b{color:var(--bp);}
+  .total.grand b{color:var(--amber);text-shadow:0 0 12px var(--amber-glow);}
   .fitstrip{width:min(1200px,100%);background:linear-gradient(180deg,var(--hous-1),var(--hous-0));
     border:1px solid var(--edge-lo);border-radius:14px;padding:16px 18px;
     box-shadow:0 1px 0 var(--edge-hi) inset;}
@@ -102,6 +105,7 @@
       </div>
     </div>
     <div id="fitmentMount"></div>
+    <div class="terms vfd">TAILLIGHTS NOT INCLUDED — SHIP YOUR CORES <b>・</b> FLAT $80 SHIPPING <b>・</b> 1-YEAR WARRANTY</div>
   </section>
 
   <div class="shelf">
@@ -111,13 +115,16 @@
       <h2>BUILD SHEET</h2>
       <span class="sub">DRAFT QUOTE ・ 見積り</span>
       <div class="lines" id="lines"></div>
-      <div class="total"><span style="font-size:10px;letter-spacing:.2em;color:var(--silk);">PARTS TOTAL</span><b id="total">$0</b></div>
+      <div class="total"><span style="font-size:10px;letter-spacing:.2em;color:var(--silk);">PARTS</span><b id="total">$0</b></div>
+      <div class="total"><span style="font-size:10px;letter-spacing:.2em;color:var(--silk);">SHIPPING · FLAT</span><b id="shipAmt" style="font-size:15px;">—</b></div>
+      <div class="total grand"><span style="font-size:10px;letter-spacing:.2em;color:var(--silk);">TOTAL</span><b id="grand">$0</b></div>
       <a class="cta" id="quoteBtn" href="#">REQUEST BUILD QUOTE →</a>
       <button class="cta wire" id="copyBtn">COPY SHEET</button>
       <span class="copyok" id="copyOk"></span>
       <span style="font-size:9.5px;color:var(--silk);line-height:1.6;">
-        Checkout is a draft quote — build queue + shipping confirmed by reply.
-        Color / flash modes ship on a show-only circuit.</span>
+        Taillights not included — ship your cores. Flat $80 shipping ·
+        1-year warranty. Checkout is a draft quote; build queue confirmed
+        by reply. Color / flash modes ship on a show-only circuit.</span>
     </aside>
   </div>
 

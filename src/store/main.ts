@@ -6,10 +6,10 @@ import '../fonts.css';
 import '../theme.css';
 import { mountFitment } from '../fitment/widget';
 import { readGarage, type ResolvedVehicle } from '../fitment/ymm';
-import { CATALOG, bySlug, fitsChassis, fmtUSD, type Product } from './catalog';
+import { CATALOG, bySlug, fitsChassis, fmtPrice, fmtUSD, type Product } from './catalog';
 import {
-  addToCart, buildSheetText, cartLines, cartTotal, lineUnitPrice,
-  mailtoHref, setQty, watchCart,
+  addToCart, buildSheetText, cartGrand, cartLines, cartShipping,
+  cartTotal, lineUnitPrice, mailtoHref, setQty, watchCart,
 } from './cart';
 import { ensureAudio, relayTick } from '../ui/sound';
 
@@ -35,7 +35,7 @@ function renderGrid(): void {
     <div class="prod" data-slug="${p.slug}">
       <span class="nm">${p.name}</span>
       <span class="sku">${p.sku}${p.eta ? ' ・ ' + p.eta : ''}</span>
-      <span class="pr">${fmtUSD(p.price)}</span>
+      <span class="pr">${fmtPrice(p.price)}</span>
       ${badge(p)}
       <span class="desc">${p.desc}</span>
       ${p.blueprint ? `<a class="bplink" href="/lab.html?bp=${p.blueprint}">▸ SEE IT RUN IN THE BLUEPRINT LAB</a>` : ''}
@@ -68,10 +68,12 @@ function renderSheet(): void {
         <span class="vfd am" style="font-size:16px;">${l.qty}</span>
         <button class="hbtn" data-inc="${l.key}">+</button>
       </span>
-      <span class="amt">${fmtUSD(lineUnitPrice(l) * l.qty)}</span>
+      <span class="amt">${lineUnitPrice(l) ? fmtUSD(lineUnitPrice(l) * l.qty) : 'QUOTE'}</span>
     </div>`;
   }).join('') : '<div class="empty">SHEET EMPTY ・ ADD A LAMP</div>';
   $('total').textContent = fmtUSD(cartTotal());
+  $('shipAmt').textContent = lines.length ? fmtUSD(cartShipping()) : '—';
+  $('grand').textContent = fmtUSD(cartGrand());
   ($('quoteBtn') as HTMLAnchorElement).href = mailtoHref(garage?.label ?? null);
 }
 

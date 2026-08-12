@@ -9,7 +9,7 @@ import { LampEngine } from '../lamp/engine';
 import { getBlueprint, BLUEPRINTS } from '../lamp/registry';
 import { mountFitment } from '../fitment/widget';
 import { readGarage, type ResolvedVehicle } from '../fitment/ymm';
-import { CATALOG, fitsChassis, fmtUSD } from '../store/catalog';
+import { CATALOG, fitsChassis, fmtPrice } from '../store/catalog';
 import { ensureAudio, powerThunk, relayTick } from '../ui/sound';
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string): T =>
@@ -200,7 +200,7 @@ function renderFeatured(): void {
     return `<div class="prod">
       <span class="nm">${p.name}</span>
       <span class="sku">${p.sku}${p.eta ? ' ・ ' + p.eta : ''}</span>
-      <span class="pr">${fmtUSD(p.price)}</span>
+      <span class="pr">${fmtPrice(p.price)}</span>
       ${fit}
       <span style="font-size:11.5px;color:var(--silk);line-height:1.5;">${p.desc}</span>
     </div>`;

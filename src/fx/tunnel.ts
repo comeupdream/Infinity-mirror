@@ -89,6 +89,11 @@ export class Tunnel {
     });
   }
 
+  /** external parallax drive (gyro on phones) — same axes as pointer */
+  setParallax(x: number, y: number): void {
+    this.tx = x; this.ty = y;
+  }
+
   setMode(m: TunnelMode): void {
     if (m === this.mode) return;
     this.prevMode = this.mode;

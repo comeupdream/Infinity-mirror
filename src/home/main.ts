@@ -14,6 +14,7 @@ import { ensureAudio, powerThunk, relayTick } from '../ui/sound';
 import { currentLang, initLang, L } from '../ui/lang';
 import { initAccent } from '../ui/accent';
 import { mountRain } from '../fx/rain';
+import { mountTilt } from '../fx/tilt';
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string): T =>
   document.getElementById(id) as T;
@@ -32,6 +33,8 @@ const S = {
 
 /* ── tunnel hero ── */
 const tunnel = new Tunnel($('tunnel') as unknown as HTMLCanvasElement);
+// M-9 motion: tilt the phone to peer inside; IGN is the permission gesture
+const tilt = mountTilt(unit, (x, y) => tunnel.setParallax(x, y));
 
 /* ── clock / ticker ── */
 const pad2 = (n: number): string => String(n).padStart(2, '0');
@@ -64,6 +67,7 @@ function powerOn(): void {
   pwrBtn.classList.add('on');
   pwrBtn.setAttribute('aria-pressed', 'true');
   tunnel.powered = true;
+  tilt.arm();
   tunnel.boot(() => unit.classList.remove('booting'));
   setTimeout(() => unit.classList.remove('booting'), 2400);
   setTimeout(() => stage.classList.remove('striking'), 1800);

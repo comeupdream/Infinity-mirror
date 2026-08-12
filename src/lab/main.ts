@@ -10,6 +10,7 @@ import { ensureAudio, relayTick } from '../ui/sound';
 import { L } from '../ui/lang';
 import { initLang } from '../ui/lang';
 import { initAccent } from '../ui/accent';
+import { mountRain } from '../fx/rain';
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string): T =>
   document.getElementById(id) as T;
@@ -64,3 +65,4 @@ requestAnimationFrame(loop);
 
 initLang();
 initAccent();
+mountRain();

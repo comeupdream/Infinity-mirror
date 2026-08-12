@@ -56,14 +56,17 @@
 
 *{box-sizing:border-box;}
 html{overflow-x:clip;}
-body{margin:0;}
+body{margin:0;
+  /* page ground lives on body so the gutter rain can float above it */
+  background:var(--page-bg) radial-gradient(120% 80% at 50% -10%, var(--page-glow) 0%, var(--page-bg) 60%) fixed;}
 
 .stage{
   min-height:100vh; padding:34px 16px 56px;
-  background:radial-gradient(120% 80% at 50% -10%, var(--page-glow) 0%, var(--page-bg) 60%);
   display:flex; flex-direction:column; align-items:center; gap:24px;
   font-family:var(--font-mono); color:var(--etch);
 }
+/* everything on the stage rides above the gutter rain */
+.stage > *{position:relative;z-index:1;}
 
 /* ── the lamp assembly ─────────────────────────────────────────── */
 .persp{width:min(1060px,100%); perspective:1500px; position:relative; z-index:0;}
@@ -255,3 +258,10 @@ html:not([data-lang="en"]) .hide-jp{display:none;}
   :root[data-accent="breathe"]{ animation: none; }
 }
 .accdot{ color:var(--acc); text-shadow:0 0 8px var(--acc-glow); }
+
+/* ── matrix kanji rain — fills the gutters beside the widest deck ── */
+.rain{position:fixed;top:0;width:calc((100vw - 1240px) / 2);
+  height:100vh;height:100dvh;display:block;z-index:0;pointer-events:none;}
+.rain-l{left:0;}
+.rain-r{right:0;}
+@media (max-width:1400px){ .rain{display:none;} }

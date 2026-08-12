@@ -13,6 +13,7 @@ import { CATALOG, fitsChassis, fmtPrice, pDesc, pEta, pName } from '../store/cat
 import { ensureAudio, powerThunk, relayTick } from '../ui/sound';
 import { currentLang, initLang, L } from '../ui/lang';
 import { initAccent } from '../ui/accent';
+import { mountRain } from '../fx/rain';
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string): T =>
   document.getElementById(id) as T;
@@ -265,3 +266,4 @@ requestAnimationFrame(loop);
 
 initLang();
 initAccent();
+mountRain();

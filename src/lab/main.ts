@@ -7,6 +7,7 @@ import { LampEngine } from '../lamp/engine';
 import { BLUEPRINTS, getBlueprint } from '../lamp/registry';
 import type { LampMode } from '../lamp/types';
 import { ensureAudio, relayTick } from '../ui/sound';
+import { L } from '../ui/lang';
 import { initLang } from '../ui/lang';
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string): T =>
@@ -25,10 +26,12 @@ function renderList(activeId: string): void {
     <button class="bp-item${b.status === 'drafting' ? ' q' : ''}"
       role="option" data-id="${b.id}" aria-pressed="${String(b.id === activeId)}">
       <span>${b.name} · ${b.chassis}</span>
-      <span class="yr">${b.years}${b.status === 'drafting' ? ' ・ <span class="st">DRAFTING</span>' : ''}</span>
+      <span class="yr">${b.years}${b.status === 'drafting' ? ` ・ <span class="st">${L('製図中', 'DRAFTING')}</span>` : ''}</span>
     </button>`).join('');
 }
 renderList(initial.id);
+let activeId = initial.id;
+document.addEventListener('im:lang', () => renderList(activeId));
 list.addEventListener('click', (e) => {
   const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('.bp-item');
   if (!btn) return;
@@ -36,6 +39,7 @@ list.addEventListener('click', (e) => {
   const bp = getBlueprint(btn.dataset.id!);
   if (!bp) return;
   engine.setBlueprint(bp);
+  activeId = bp.id;
   renderList(bp.id);
   const url = new URL(location.href);
   url.searchParams.set('bp', bp.id);

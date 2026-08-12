@@ -16,8 +16,13 @@ export function currentLang(): Lang {
   try { return localStorage.getItem(KEY) === 'en' ? 'en' : 'jp'; } catch { return 'jp'; }
 }
 
+/** pick per current language — for JS-rendered strings */
+export const L = (jp: string, en: string): string =>
+  currentLang() === 'en' ? en : jp;
+
 function apply(lang: Lang): void {
   document.documentElement.setAttribute('data-lang', lang);
+  document.documentElement.lang = lang === 'jp' ? 'ja' : 'en';
   document.querySelectorAll<HTMLElement>('.jx').forEach((el) => {
     if (el.dataset.jp === undefined) el.dataset.jp = el.textContent ?? '';
     const next = lang === 'en' ? el.dataset.en : el.dataset.jp;

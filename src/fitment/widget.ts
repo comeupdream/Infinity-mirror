@@ -3,6 +3,7 @@
    resolveVehicle() so the page only listens for `im:vehicle-resolved`. */
 
 import { decodeVin } from './vin';
+import { L } from '../ui/lang';
 import {
   coveredYears, makesForYear, matchVehicle, modelsFor, readGarage,
   resolveVehicle, type Vehicle,
@@ -11,22 +12,25 @@ import {
 export function mountFitment(host: HTMLElement): void {
   host.innerHTML = `
     <div class="fit-grid">
-      <label class="fit-field"><span>YEAR</span>
+      <label class="fit-field"><span class="jx" data-en="YEAR">年式</span>
         <select data-f="year"><option value="">—</option></select></label>
-      <label class="fit-field"><span>MAKE</span>
+      <label class="fit-field"><span class="jx" data-en="MAKE">メーカー</span>
         <select data-f="make" disabled><option value="">—</option></select></label>
-      <label class="fit-field"><span>MODEL</span>
+      <label class="fit-field"><span class="jx" data-en="MODEL">モデル</span>
         <select data-f="model" disabled><option value="">—</option></select></label>
     </div>
     <div class="fit-vinrow">
-      <label class="fit-field vin"><span>VIN PLATE · <span class="jx" data-en="CHASSIS NO.">車台番号</span></span>
-        <input data-f="vin" maxlength="17" spellcheck="false" autocomplete="off"
-          placeholder="17 CHARACTERS — DECODES YOUR CHASSIS" /></label>
-      <button class="hbtn" data-f="decode">DECODE</button>
+      <label class="fit-field vin"><span><span class="jx" data-en="VIN PLATE">車台番号</span> · VIN</span>
+        <input data-f="vin" maxlength="17" spellcheck="false" autocomplete="off" /></label>
+      <button class="hbtn" data-f="decode"><span class="jx" data-en="DECODE">解析</span></button>
     </div>
     <div class="fit-hint vfd cy" data-f="hint" role="status"></div>`;
 
   const q = <T extends HTMLElement>(sel: string): T => host.querySelector<T>(`[data-f="${sel}"]`)!;
+  const setPlaceholder = (): void => {
+    q<HTMLInputElement>('vin').placeholder =
+      L('17桁 — 車体を自動判別', '17 CHARACTERS — DECODES YOUR CHASSIS');
+  };
   const yearSel = q<HTMLSelectElement>('year');
   const makeSel = q<HTMLSelectElement>('make');
   const modelSel = q<HTMLSelectElement>('model');
@@ -40,6 +44,8 @@ export function mountFitment(host: HTMLElement): void {
   };
 
   fill(yearSel, coveredYears().map((y) => ({ value: String(y), text: String(y) })));
+  setPlaceholder();
+  document.addEventListener('im:lang', setPlaceholder);
 
   yearSel.addEventListener('change', () => {
     const y = Number(yearSel.value);
@@ -68,25 +74,37 @@ export function mountFitment(host: HTMLElement): void {
 
   function apply(v: Vehicle, label: string): void {
     hint.textContent = `→ ${label} · ${v.chassis}` +
-      (v.blueprint ? ' · BLUEPRINT ON FILE' : '');
+      (v.blueprint ? L(' · 図面あり', ' · BLUEPRINT ON FILE') : '');
     resolveVehicle(v, label);
   }
 
+  // vPIC errors are thrown in English; map them for the kanji-first UI
+  const jpError = (msg: string): string => {
+    if (msg.startsWith('VIN must')) return 'VINは17桁です（I・O・Qは使いません）';
+    if (msg.startsWith('Check digit')) return 'チェックデジット不一致 — 9桁目を再確認してください';
+    if (msg.startsWith('VIN service')) return 'VINサービスに接続できません — 年式/メーカー/モデルで選択してください';
+    if (msg.startsWith('Could not')) return 'このVINは解析できませんでした';
+    return '解析に失敗しました';   // never surface untranslated English
+  };
+
   async function runDecode(): Promise<void> {
-    hint.textContent = 'DECODING…';
+    hint.textContent = L('解析中…', 'DECODING…');
     try {
       const r = await decodeVin(vinInput.value);
       const v = matchVehicle(r.year, r.make, r.model);
       const label = `${r.year} ${r.make} ${r.model}`;
       if (v) apply(v, label);
-      else hint.textContent = `DECODED ${label.toUpperCase()} — not in the fitment table yet. Pick the closest chassis manually.`;
+      else hint.textContent = L(
+        `解析: ${label} — 適合表に未登録です。近い車種を手動で選択してください。`,
+        `DECODED ${label.toUpperCase()} — not in the fitment table yet. Pick the closest chassis manually.`);
     } catch (e) {
-      hint.textContent = (e instanceof Error ? e.message : 'Decode failed.').toUpperCase();
+      const msg = e instanceof Error ? e.message : 'Decode failed.';
+      hint.textContent = L(jpError(msg), msg.toUpperCase());
     }
   }
   decodeBtn.addEventListener('click', () => void runDecode());
   vinInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') void runDecode(); });
 
   const g = readGarage();
-  if (g) hint.textContent = `GARAGE → ${g.label} · ${g.chassis}`;
+  if (g) hint.textContent = L(`ガレージ → ${g.label} · ${g.chassis}`, `GARAGE → ${g.label} · ${g.chassis}`);
 }

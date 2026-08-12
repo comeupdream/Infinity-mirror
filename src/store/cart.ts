@@ -5,7 +5,8 @@
    Checkout is a draft quote request (mailto + copyable sheet) — no
    payment processor is wired yet, and the sheet says so honestly. */
 
-import { bySlug, fmtUSD, SHIPPING_CENTS, type Product } from './catalog';
+import { bySlug, fmtUSD, pName, pOptLabel, SHIPPING_CENTS, type Product } from './catalog';
+import { currentLang } from '../ui/lang';
 
 const KEY = 'im-cart';
 /** Configure before launch: where quote requests land. */
@@ -101,30 +102,46 @@ export function watchCart(onChange: () => void): void {
 /* ── quote-request checkout ────────────────────────────────────── */
 
 export function buildSheetText(garageLabel: string | null): string {
+  const en = currentLang() === 'en';
   const lines = cartLines();
   const rows = lines.map((l) => {
     const p = bySlug(l.slug)!;
-    const opt = l.option ? ` [${l.option}]` : '';
+    const optLbl = l.option ? pOptLabel(p, l.option) : '';
+    const opt = optLbl ? ` [${optLbl}]` : '';
     const unit = lineUnitPrice(l);
-    return `${l.qty}× ${p.name}${opt} (${p.sku}) — ${unit ? fmtUSD(unit * l.qty) : 'BY QUOTE'}`;
+    const amt = unit ? fmtUSD(unit * l.qty) : (en ? 'BY QUOTE' : '要相談');
+    return `${l.qty}× ${pName(p)}${opt} (${p.sku}) — ${amt}`;
   });
-  return [
-    'INFINITY MIRROR WORKS — BUILD SHEET',
-    '───────────────────────────────────',
-    ...rows,
-    '───────────────────────────────────',
-    `PARTS: ${fmtUSD(cartTotal())}${cartHasQuoteItems() ? ' + by-quote items' : ''}`,
-    `SHIPPING (FLAT): ${fmtUSD(cartShipping())}`,
-    `TOTAL: ${fmtUSD(cartGrand())}`,
-    garageLabel ? `VEHICLE: ${garageLabel}` : 'VEHICLE: (add your chassis / VIN)',
-    '',
-    'Taillights not included — I will ship my cores (or source in Japan). 1-year warranty.',
-    'Please confirm the current queue / start date. I understand the $300',
-    'appointment deposit locks the slot and builds run 10 days from start.',
-  ].join('\n');
+  const head = en ? 'INFINITY MIRROR WORKS — BUILD SHEET'
+                  : 'INFINITY MIRROR WORKS — ビルドシート';
+  const tail = en
+    ? [
+        `PARTS: ${fmtUSD(cartTotal())}${cartHasQuoteItems() ? ' + by-quote items' : ''}`,
+        `SHIPPING (FLAT): ${fmtUSD(cartShipping())}`,
+        `TOTAL: ${fmtUSD(cartGrand())}`,
+        garageLabel ? `VEHICLE: ${garageLabel}` : 'VEHICLE: (add your chassis / VIN)',
+        '',
+        'Taillights not included — I will ship my cores (or source in Japan). 1-year warranty.',
+        'Please confirm the current queue / start date. I understand the $300',
+        'appointment deposit locks the slot and builds run 10 days from start.',
+      ]
+    : [
+        `部品代: ${fmtUSD(cartTotal())}${cartHasQuoteItems() ? ' + 要相談の項目' : ''}`,
+        `送料（一律）: ${fmtUSD(cartShipping())}`,
+        `合計: ${fmtUSD(cartGrand())}`,
+        garageLabel ? `車両: ${garageLabel}` : '車両: （車種またはVINを追加してください）',
+        '',
+        'テールランプ本体が含まれないこと（コアは送付、または日本で調達）、および1年保証の内容を承知しています。',
+        '現在の順番待ちと着手時期の確認をお願いします。予約金$300で枠が確保され、',
+        '製作は着手から10日間と理解しています。',
+      ];
+  return [head, '───────────────────────────────────', ...rows,
+    '───────────────────────────────────', ...tail].join('\n');
 }
 
 export function mailtoHref(garageLabel: string | null): string {
-  const subject = 'Build quote — Infinity Mirror Works';
+  const subject = currentLang() === 'en'
+    ? 'Build quote — Infinity Mirror Works'
+    : '見積り依頼 — Infinity Mirror Works';
   return `mailto:${ORDERS_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(buildSheetText(garageLabel))}`;
 }

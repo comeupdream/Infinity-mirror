@@ -9,9 +9,9 @@ import { LampEngine } from '../lamp/engine';
 import { getBlueprint, BLUEPRINTS } from '../lamp/registry';
 import { mountFitment } from '../fitment/widget';
 import { readGarage, type ResolvedVehicle } from '../fitment/ymm';
-import { CATALOG, fitsChassis, fmtPrice } from '../store/catalog';
+import { CATALOG, fitsChassis, fmtPrice, pDesc, pEta, pName } from '../store/catalog';
 import { ensureAudio, powerThunk, relayTick } from '../ui/sound';
-import { currentLang, initLang } from '../ui/lang';
+import { currentLang, initLang, L } from '../ui/lang';
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string): T =>
   document.getElementById(id) as T;
@@ -39,15 +39,16 @@ function tickClock(): void {
   $('sclock').textContent = `${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
 }
 tickClock(); setInterval(tickClock, 1000);
-const tickerFor = (lang: string): string =>
-  'INFINITY MIRROR WORKS ・ IM-∞88 LIGHT ENGINE ・ ' +
-  (lang === 'en' ? 'INFINITY MIRROR' : 'インフィニティ・ミラー') +
-  ' ・ CUSTOM INFINITY HEADLIGHTS + TAILS ・ 10-DAY BUILDS ・ $300 APPOINTMENT ・ PRESS IGN TO ENTER THE MIRROR ・ GS400 BLUEPRINT LIVE IN THE LAB ・ ' +
-  (lang === 'en' ? 'LIGHT' : '光') + ' ・ ';
+const tickerFor = (lang: string): string => lang === 'en'
+  ? 'INFINITY MIRROR WORKS ・ IM-∞88 LIGHT ENGINE ・ INFINITY MIRROR ・ CUSTOM INFINITY HEADLIGHTS + TAILS ・ 10-DAY BUILDS ・ $300 APPOINTMENT ・ PRESS IGN TO ENTER THE MIRROR ・ GS400 BLUEPRINT LIVE IN THE LAB ・ LIGHT ・ '
+  : 'INFINITY MIRROR WORKS ・ IM-∞88 ライトエンジン ・ インフィニティ・ミラー ・ カスタム・インフィニティヘッド＆テールライト ・ 製作10日 ・ 予約金$300 ・ IGNを押してミラーの中へ ・ GS400図面ラボ稼働中 ・ 光 ・ ';
 $('ticker').textContent = tickerFor(currentLang()).repeat(2);
 document.addEventListener('im:lang', ((e: CustomEvent<string>) => {
   $('ticker').textContent = tickerFor(e.detail).repeat(2);
 }) as EventListener);
+document.addEventListener('im:lang', () => {
+  renderFeatured(); renderBpChips(); setIllumi(illumiNight);
+});
 
 /* ── ignition ── */
 const pwrBtn = $('pwr');
@@ -78,9 +79,11 @@ pwrBtn.addEventListener('click', () => { S.powered ? powerOff() : powerOn(); });
 
 /* ── illumination (NIGHT / BENCH) ── */
 const prefersDark = matchMedia('(prefers-color-scheme: dark)');
+let illumiNight = true;
 function setIllumi(night: boolean): void {
+  illumiNight = night;
   root.setAttribute('data-theme', night ? 'night' : 'bench');
-  $('illumiTxt').textContent = night ? 'NIGHT' : 'BENCH';
+  $('illumiTxt').textContent = night ? L('ナイト', 'NIGHT') : L('ベンチ', 'BENCH');
 }
 setIllumi(prefersDark.matches);
 $('illumi').addEventListener('click', () => {
@@ -178,7 +181,10 @@ presets.forEach((p) => p.addEventListener('click', () => {
   tunnel.setMode(mode);
   S.modeBeforeStalk = mode;
   $('modeTxt').textContent = 'MODE · ' + mode.toUpperCase();
-  $('ticker').textContent = ((p.dataset.station ?? '') + ' ・ ').repeat(3);
+  const station = currentLang() === 'en'
+    ? (p.dataset.stationEn ?? p.dataset.station ?? '')
+    : (p.dataset.station ?? '');
+  $('ticker').textContent = (station + ' ・ ').repeat(3);
   renderBeam();
 }));
 
@@ -203,14 +209,14 @@ function renderFeatured(): void {
     ['gs400-infinity-tails', 's197-tribar-tails', 'custom-infinity-headlights'].includes(p.slug));
   $('featured').innerHTML = featured.map((p) => {
     const fit = fitsChassis(p, garage?.chassis ?? null)
-      ? `<span class="fit yes">✓ FITS YOUR ${garage!.chassis}</span>`
-      : p.kind === 'build' ? '<span class="fit build">BUILT TO ORDER</span>' : '';
+      ? `<span class="fit yes">${L(`✓ ${garage!.chassis}に適合`, `✓ FITS YOUR ${garage!.chassis}`)}</span>`
+      : p.kind === 'build' ? `<span class="fit build">${L('受注製作', 'BUILT TO ORDER')}</span>` : '';
     return `<div class="prod">
-      <span class="nm">${p.name}</span>
-      <span class="sku">${p.sku}${p.eta ? ' ・ ' + p.eta : ''}</span>
+      <span class="nm">${pName(p)}</span>
+      <span class="sku">${p.sku}${pEta(p) ? ' ・ ' + pEta(p) : ''}</span>
       <span class="pr">${fmtPrice(p.price)}</span>
       ${fit}
-      <span style="font-size:11.5px;color:var(--silk);line-height:1.5;">${p.desc}</span>
+      <span style="font-size:11.5px;color:var(--silk);line-height:1.5;">${pDesc(p)}</span>
     </div>`;
   }).join('');
 }
@@ -220,9 +226,12 @@ renderFeatured();
 const labEngine = new LampEngine($('labMini') as unknown as HTMLCanvasElement);
 labEngine.setBlueprint(getBlueprint('gs400-s160')!);
 labEngine.setMode('CYCLE');
-$('bpChips').innerHTML = BLUEPRINTS.map((b) =>
-  `<span class="bp-chip${b.status === 'drafting' ? ' q' : ''}">${b.chassis}${b.status === 'drafting' ? ' · QUEUED' : ' · LIVE'}</span>`,
-).join('');
+function renderBpChips(): void {
+  $('bpChips').innerHTML = BLUEPRINTS.map((b) =>
+    `<span class="bp-chip${b.status === 'drafting' ? ' q' : ''}">${b.chassis}${b.status === 'drafting' ? L(' · 製図中', ' · QUEUED') : L(' · 稼働中', ' · LIVE')}</span>`,
+  ).join('');
+}
+renderBpChips();
 
 /* ── fitment ── */
 mountFitment($('fitmentMount'));

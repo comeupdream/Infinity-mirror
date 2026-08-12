@@ -60,7 +60,7 @@
 <div class="stage" id="stage">
   <div class="labbar">
     <a class="wordmark" href="/">◀ INFINITY <span class="inf">MIRROR</span> WORKS</a>
-    <span class="jp"><span class="jx" data-en="DRAWING LAB">図面ラボ</span> ・ BLUEPRINT LAB ・ <span class="jx" data-en="LIGHT">光</span></span>
+    <span class="jp"><span class="jx jx-acc" data-en="DRAWING LAB">図面ラボ</span> ・ BLUEPRINT LAB ・ <span class="jx jx-acc" data-en="LIGHT">光</span></span>
     <button class="hbtn langbtn" data-lang-toggle aria-label="Switch language">EN</button>
   </div>
 
@@ -69,29 +69,26 @@
       <canvas id="sheet" aria-label="Animated lamp blueprint"></canvas>
     </div>
     <aside class="rail">
-      <span class="lbl">CHASSIS ・ <span class="jx" data-en="VEHICLE">車種</span></span>
+      <span class="lbl"><span class="jx" data-en="CHASSIS">車種</span> ・ <span class="jx jx-acc" data-en="VEHICLE">シャーシ</span></span>
       <div class="bp-list" id="bpList" role="listbox"></div>
-      <span class="lbl">LIGHT PROGRAM</span>
+      <span class="lbl jx" data-en="LIGHT PROGRAM">点灯プログラム</span>
       <div class="modes" id="modes">
-        <button class="hbtn" data-mode="CYCLE" aria-pressed="true">FULL CYCLE</button>
-        <button class="hbtn" data-mode="PARK" aria-pressed="false">PARK</button>
-        <button class="hbtn" data-mode="BRAKE" aria-pressed="false">BRAKE</button>
-        <button class="hbtn" data-mode="TURN" aria-pressed="false">SEQ TURN</button>
-        <button class="hbtn" data-mode="REVERSE" aria-pressed="false">REVERSE</button>
-        <button class="hbtn" data-mode="SHOW" aria-pressed="false">SHOW · RGB</button>
+        <button class="hbtn" data-mode="CYCLE" aria-pressed="true"><span class="jx" data-en="FULL CYCLE">フルサイクル</span></button>
+        <button class="hbtn" data-mode="PARK" aria-pressed="false"><span class="jx" data-en="PARK">ポジション</span></button>
+        <button class="hbtn" data-mode="BRAKE" aria-pressed="false"><span class="jx" data-en="BRAKE">ブレーキ</span></button>
+        <button class="hbtn" data-mode="TURN" aria-pressed="false"><span class="jx" data-en="SEQ TURN">流れるウインカー</span></button>
+        <button class="hbtn" data-mode="REVERSE" aria-pressed="false"><span class="jx" data-en="REVERSE">バック</span></button>
+        <button class="hbtn" data-mode="SHOW" aria-pressed="false"><span class="jx" data-en="SHOW · RGB">ショー · RGB</span></button>
       </div>
-      <div class="note"><b>How a car gets in:</b> every sheet is pure path
-        data — housing, pods, LED runs. One file per chassis. The queue
-        below the live sheets is real: geometry lands as reference photos
-        arrive.</div>
-      <a class="cta ice" href="/store.html" style="margin-top:auto;">BUILD THIS LAMP →</a>
+      <div class="note"><b class="jx" data-en="How a car gets in:">車種追加の仕組み：</b> <span class="jx" data-en="every sheet is pure path data — housing, pods, LED runs. One file per chassis. The queue below the live sheets is real: geometry lands as reference photos arrive.">シートはすべて純粋なパスデータ — ハウジング、ポッド、LED列。1車種につき1ファイル。稼働シートの下の順番待ちは実際の受注リストで、参考写真が届き次第ジオメトリを実装します。</span></div>
+      <a class="cta ice jx" data-en="BUILD THIS LAMP →" href="/store.html" style="margin-top:auto;">このランプを作る →</a>
     </aside>
   </div>
 
   <footer>
-    <span>BLUEPRINT LAB ・ SHEETS DRAWN RH · MIRRORED FOR LH</span>
+    <span class="jx" data-en="BLUEPRINT LAB ・ SHEETS DRAWN RH · MIRRORED FOR LH">図面ラボ ・ 図面は右側用 · 左側は鏡像</span>
     <span>SEQ RELAY 84 CPM</span>
-    <span><span class="jx" data-en="LIGHT">光</span></span>
+    <span><span class="jx jx-acc" data-en="LIGHT">光</span></span>
   </footer>
 </div>
 

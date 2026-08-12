@@ -6,12 +6,13 @@ import '../fonts.css';
 import '../theme.css';
 import { mountFitment } from '../fitment/widget';
 import { readGarage, type ResolvedVehicle } from '../fitment/ymm';
-import { CATALOG, bySlug, fitsChassis, fmtPrice, fmtUSD, type Product } from './catalog';
+import { CATALOG, bySlug, fitsChassis, fmtPrice, fmtUSD, pDesc, pEta, pName, pOptLabel, type Product } from './catalog';
 import {
   addToCart, buildSheetText, cartGrand, cartLines, cartShipping,
   cartTotal, lineUnitPrice, mailtoHref, setQty, watchCart,
 } from './cart';
 import { ensureAudio, relayTick } from '../ui/sound';
+import { L } from '../ui/lang';
 import { initLang } from '../ui/lang';
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string): T =>
@@ -22,11 +23,13 @@ let fitsOnly = false;
 
 /* ── product grid ── */
 function badge(p: Product): string {
-  if (fitsChassis(p, garage?.chassis ?? null)) return `<span class="fit yes">✓ FITS YOUR ${garage!.chassis}</span>`;
-  if (p.kind === 'build') return '<span class="fit build">BUILT TO ORDER ・ ANY CHASSIS</span>';
-  if (p.chassis.length && garage) return `<span class="fit no">✕ NOT FOR ${garage.chassis}</span>`;
+  if (fitsChassis(p, garage?.chassis ?? null)) {
+    return `<span class="fit yes">${L(`✓ ${garage!.chassis}に適合`, `✓ FITS YOUR ${garage!.chassis}`)}</span>`;
+  }
+  if (p.kind === 'build') return `<span class="fit build">${L('受注製作 ・ 全車種対応', 'BUILT TO ORDER ・ ANY CHASSIS')}</span>`;
+  if (p.chassis.length && garage) return `<span class="fit no">${L(`✕ ${garage.chassis}には非適合`, `✕ NOT FOR ${garage.chassis}`)}</span>`;
   if (p.chassis.length) return `<span class="fit build">${p.chassis.join(' · ')}</span>`;
-  return '<span class="fit build">UNIVERSAL PART</span>';
+  return `<span class="fit build">${L('汎用パーツ', 'UNIVERSAL PART')}</span>`;
 }
 
 function renderGrid(): void {
@@ -34,15 +37,15 @@ function renderGrid(): void {
     !fitsOnly || fitsChassis(p, garage?.chassis ?? null) || p.kind === 'build');
   $('grid').innerHTML = items.map((p) => `
     <div class="prod" data-slug="${p.slug}">
-      <span class="nm">${p.name}</span>
-      <span class="sku">${p.sku}${p.eta ? ' ・ ' + p.eta : ''}</span>
+      <span class="nm">${pName(p)}</span>
+      <span class="sku">${p.sku}${pEta(p) ? ' ・ ' + pEta(p) : ''}</span>
       <span class="pr">${fmtPrice(p.price)}</span>
       ${badge(p)}
-      <span class="desc">${p.desc}</span>
-      ${p.blueprint ? `<a class="bplink" href="/lab.html?bp=${p.blueprint}">▸ SEE IT RUN IN THE BLUEPRINT LAB</a>` : ''}
+      <span class="desc">${pDesc(p)}</span>
+      ${p.blueprint ? `<a class="bplink" href="/lab.html?bp=${p.blueprint}">${L('▸ 図面ラボで動きを見る', '▸ SEE IT RUN IN THE BLUEPRINT LAB')}</a>` : ''}
       ${p.options ? `<select data-opt>${p.options.map((o) =>
-        `<option>${o.label}${o.priceDelta ? ' (+' + fmtUSD(o.priceDelta) + ')' : ''}</option>`).join('')}</select>` : ''}
-      <div class="addrow"><button class="hbtn add" data-add>+ ADD TO BUILD SHEET</button></div>
+        `<option>${pOptLabel(p, o.label)}${o.priceDelta ? ' (+' + fmtUSD(o.priceDelta) + ')' : ''}</option>`).join('')}</select>` : ''}
+      <div class="addrow"><button class="hbtn add" data-add>${L('+ ビルドシートに追加', '+ ADD TO BUILD SHEET')}</button></div>
     </div>`).join('');
 }
 
@@ -63,15 +66,15 @@ function renderSheet(): void {
   $('lines').innerHTML = lines.length ? lines.map((l) => {
     const p = bySlug(l.slug)!;
     return `<div class="line">
-      <span class="n">${p.name}${l.option ? `<small>${l.option}</small>` : ''}</span>
+      <span class="n">${pName(p)}${l.option ? `<small>${pOptLabel(p, l.option)}</small>` : ''}</span>
       <span class="q">
         <button class="hbtn" data-dec="${l.key}">−</button>
         <span class="vfd am" style="font-size:16px;">${l.qty}</span>
         <button class="hbtn" data-inc="${l.key}">+</button>
       </span>
-      <span class="amt">${lineUnitPrice(l) ? fmtUSD(lineUnitPrice(l) * l.qty) : 'QUOTE'}</span>
+      <span class="amt">${lineUnitPrice(l) ? fmtUSD(lineUnitPrice(l) * l.qty) : L('要相談', 'QUOTE')}</span>
     </div>`;
-  }).join('') : '<div class="empty">SHEET EMPTY ・ ADD A LAMP</div>';
+  }).join('') : `<div class="empty">${L('シートは空 ・ ランプを追加してください', 'SHEET EMPTY ・ ADD A LAMP')}</div>`;
   $('total').textContent = fmtUSD(cartTotal());
   $('shipAmt').textContent = lines.length ? fmtUSD(cartShipping()) : '—';
   $('grand').textContent = fmtUSD(cartGrand());
@@ -91,7 +94,7 @@ $('lines').addEventListener('click', (e) => {
 
 $('copyBtn').addEventListener('click', () => {
   void navigator.clipboard?.writeText(buildSheetText(garage?.label ?? null)).then(() => {
-    $('copyOk').textContent = '✓ SHEET COPIED';
+    $('copyOk').textContent = L('✓ コピーしました', '✓ SHEET COPIED');
     setTimeout(() => { $('copyOk').textContent = ''; }, 2500);
   });
 });
@@ -106,7 +109,7 @@ function renderGarage(): void {
     chip.textContent = `${garage.label.toUpperCase()} · ${garage.chassis}`;
     chip.classList.remove('none');
   } else {
-    chip.textContent = 'NO VEHICLE SAVED';
+    chip.textContent = L('車両未登録', 'NO VEHICLE SAVED');
     chip.classList.add('none');
   }
 }
@@ -127,5 +130,6 @@ $('fitsOnly').addEventListener('click', () => {
 renderGarage();
 renderGrid();
 renderSheet();
+document.addEventListener('im:lang', () => { renderGarage(); renderGrid(); renderSheet(); });
 
 initLang();

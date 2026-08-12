@@ -98,20 +98,20 @@
 <div class="stage" id="stage">
   <div class="storebar">
     <a class="wordmark" href="/">◀ INFINITY <span class="inf">MIRROR</span> WORKS</a>
-    <span class="jp"><span class="jx" data-en="SHOP">ストア</span> ・ STORE ・ <span class="jx" data-en="LIGHT">光</span></span>
+    <span class="jp"><span class="jx jx-acc" data-en="SHOP">ストア</span> ・ STORE ・ <span class="jx jx-acc" data-en="LIGHT">光</span></span>
     <button class="hbtn langbtn" data-lang-toggle aria-label="Switch language">EN</button>
   </div>
 
   <section class="fitstrip" aria-label="Fitment">
     <div class="row">
-      <h1>Your chassis</h1>
+      <h1 class="jx" data-en="Your chassis">愛車情報</h1>
       <div class="garline">
-        <span class="garchip none" id="garChip">NO VEHICLE SAVED</span>
-        <button class="hbtn fitsonly" id="fitsOnly" aria-pressed="false">✓ FITS-ONLY</button>
+        <span class="garchip none" id="garChip">車両未登録</span>
+        <button class="hbtn fitsonly" id="fitsOnly" aria-pressed="false"><span class="jx" data-en="✓ FITS-ONLY">✓ 適合のみ</span></button>
       </div>
     </div>
     <div id="fitmentMount"></div>
-    <div class="terms vfd">TAILLIGHTS NOT INCLUDED — SHIP YOUR CORES <b>・</b> FLAT $80 SHIPPING <b>・</b> 1-YEAR WARRANTY</div>
+    <div class="terms vfd"><span class="jx" data-en="TAILLIGHTS NOT INCLUDED — SHIP YOUR CORES">テールランプ本体は含まれません — コアをお送りください</span> <b>・</b> <span class="jx" data-en="FLAT $80 SHIPPING">送料一律 $80</span> <b>・</b> <span class="jx" data-en="1-YEAR WARRANTY">1年保証</span></div>
   </section>
 
   <div class="shelf">
@@ -119,33 +119,30 @@
 
     <aside class="sheetcard" aria-label="Build sheet">
       <h2>BUILD SHEET</h2>
-      <span class="sub">DRAFT QUOTE ・ <span class="jx" data-en="ESTIMATE">見積り</span></span>
+      <span class="sub"><span class="jx" data-en="DRAFT QUOTE">概算見積り</span> ・ <span class="jx jx-acc" data-en="ESTIMATE">見積り</span></span>
       <div class="lines" id="lines"></div>
-      <div class="total"><span style="font-size:10px;letter-spacing:.2em;color:var(--silk);">PARTS</span><b id="total">$0</b></div>
-      <div class="total"><span style="font-size:10px;letter-spacing:.2em;color:var(--silk);">SHIPPING · FLAT</span><b id="shipAmt" style="font-size:15px;">—</b></div>
-      <div class="total grand"><span style="font-size:10px;letter-spacing:.2em;color:var(--silk);">TOTAL</span><b id="grand">$0</b></div>
-      <a class="cta" id="quoteBtn" href="#">REQUEST BUILD QUOTE →</a>
-      <button class="cta wire" id="copyBtn">COPY SHEET</button>
+      <div class="total"><span style="font-size:10px;letter-spacing:.2em;color:var(--silk);"><span class="jx" data-en="PARTS">部品代</span></span><b id="total">$0</b></div>
+      <div class="total"><span style="font-size:10px;letter-spacing:.2em;color:var(--silk);"><span class="jx" data-en="SHIPPING · FLAT">送料 · 一律</span></span><b id="shipAmt" style="font-size:15px;">—</b></div>
+      <div class="total grand"><span style="font-size:10px;letter-spacing:.2em;color:var(--silk);"><span class="jx" data-en="TOTAL">合計</span></span><b id="grand">$0</b></div>
+      <a class="cta jx" data-en="REQUEST BUILD QUOTE →" id="quoteBtn" href="#">見積りを依頼 →</a>
+      <button class="cta wire jx" data-en="COPY SHEET" id="copyBtn">シートをコピー</button>
       <span class="copyok" id="copyOk"></span>
       <div class="flowcard" aria-label="Order flow">
-        <span class="sub">ORDER FLOW ・ <span class="jx" data-en="SEQUENCE">順序</span></span>
-        <div class="fstep"><b>01</b><span><i>ORDER ACCEPTED</i> — sheet in; current queue confirmed before anything else</span></div>
-        <div class="fstep"><b>02</b><span><i>APPOINTMENT MONEY · $300</i> — PayPal deposit locks the slot. Include your name + address with payment</span></div>
-        <div class="fstep"><b>03</b><span><i>DESIGN CREATION</i> — your lamp drawn up and approved before a single cut</span></div>
-        <div class="fstep"><b>04</b><span><i>BUILD · 10 DAYS</i> — work starts once the custom price is confirmed; complete in 10 days from start</span></div>
-        <div class="fnote">CORES: SHIP YOURS — OR SOURCED IN JAPAN FOR YOU</div>
+        <span class="sub"><span class="jx" data-en="ORDER FLOW">注文の流れ</span> ・ <span class="jx jx-acc" data-en="SEQUENCE">順序</span></span>
+        <div class="fstep"><b>01</b><span><i class="jx" data-en="ORDER ACCEPTED">ご注文受付</i><span class="jx" data-en=" — sheet in; current queue confirmed before anything else"> — シート送信後、まず現在の順番待ちを確認</span></span></div>
+        <div class="fstep"><b>02</b><span><i class="jx" data-en="APPOINTMENT MONEY · $300">予約金 · $300</i><span class="jx" data-en=" — PayPal deposit locks the slot. Include your name + address with payment"> — PayPal入金で枠を確保。お名前と住所を添えてお支払いください</span></span></div>
+        <div class="fstep"><b>03</b><span><i class="jx" data-en="DESIGN CREATION">デザイン作成</i><span class="jx" data-en=" — your lamp drawn up and approved before a single cut"> — 加工前に図面を作成し、承認をいただきます</span></span></div>
+        <div class="fstep"><b>04</b><span><i class="jx" data-en="BUILD · 10 DAYS">製作 · 10日間</i><span class="jx" data-en=" — work starts once the custom price is confirmed; complete in 10 days from start"> — 金額確定後に着手、開始から10日で完成</span></span></div>
+        <div class="fnote jx" data-en="CORES: SHIP YOURS — OR SOURCED IN JAPAN FOR YOU">コア：お手持ちのランプを送付 — または日本で調達も可能</div>
       </div>
-      <span style="font-size:9.5px;color:var(--silk);line-height:1.6;">
-        Taillights not included — ship your cores. Flat $80 shipping ·
-        1-year warranty. Checkout is a draft quote; build queue confirmed
-        by reply. Color / flash modes ship on a show-only circuit.</span>
+      <span class="jx" style="font-size:9.5px;color:var(--silk);line-height:1.6;" data-en="Taillights not included — ship your cores. Flat $80 shipping · 1-year warranty. Checkout is a draft quote; build queue confirmed by reply. Color / flash modes ship on a show-only circuit.">テールランプ本体は含まれません — コアをお送りください。送料一律$80 · 1年保証。チェックアウトは概算見積りの依頼です。順番待ちは返信で確定。カラー/点滅モードはショー専用回路で出荷します。</span>
     </aside>
   </div>
 
   <footer>
     <span>INFINITY MIRROR WORKS ・ STORE</span>
-    <span>FITMENT BADGES REQUIRE POSITIVE EVIDENCE</span>
-    <span><span class="jx" data-en="LIGHT">光</span></span>
+    <span class="jx" data-en="FITMENT BADGES REQUIRE POSITIVE EVIDENCE">適合バッジは実証ベース</span>
+    <span><span class="jx jx-acc" data-en="LIGHT">光</span></span>
   </footer>
 </div>
 

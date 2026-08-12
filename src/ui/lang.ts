@@ -23,7 +23,9 @@ export const L = (jp: string, en: string): string =>
 function apply(lang: Lang): void {
   document.documentElement.setAttribute('data-lang', lang);
   document.documentElement.lang = lang === 'jp' ? 'ja' : 'en';
-  document.querySelectorAll<HTMLElement>('.jx').forEach((el) => {
+  // .jx-acc accents never swap — the tiny kanji siblings stay kanji in
+  // English mode (they're the trim, not the copy)
+  document.querySelectorAll<HTMLElement>('.jx:not(.jx-acc)').forEach((el) => {
     if (el.dataset.jp === undefined) el.dataset.jp = el.textContent ?? '';
     const next = lang === 'en' ? el.dataset.en : el.dataset.jp;
     if (next !== undefined && el.textContent !== next) el.textContent = next;

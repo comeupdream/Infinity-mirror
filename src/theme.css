@@ -227,3 +227,9 @@ textarea, input[type="text"], input[type="email"], input[type="search"] { cursor
   .panel{animation:none;}
   .unit{transition:none;}
 }
+
+/* ── JP/EN accent toggle — English lands in the kanji's exact spot,
+      a step smaller so it stays an accent, never a headline ── */
+html[data-lang="en"] .jx{font-size:.86em;letter-spacing:.14em;opacity:.92;}
+.langbtn{font-size:10px;letter-spacing:.18em;padding:5px 10px;min-width:44px;}
+.langbtn[aria-pressed="true"]{color:var(--amber);border-color:var(--amber);}

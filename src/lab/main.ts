@@ -7,6 +7,7 @@ import { LampEngine } from '../lamp/engine';
 import { BLUEPRINTS, getBlueprint } from '../lamp/registry';
 import type { LampMode } from '../lamp/types';
 import { ensureAudio, relayTick } from '../ui/sound';
+import { initLang } from '../ui/lang';
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string): T =>
   document.getElementById(id) as T;
@@ -55,3 +56,5 @@ function loop(now: number): void {
   requestAnimationFrame(loop);
 }
 requestAnimationFrame(loop);
+
+initLang();

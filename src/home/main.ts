@@ -11,6 +11,7 @@ import { mountFitment } from '../fitment/widget';
 import { readGarage, type ResolvedVehicle } from '../fitment/ymm';
 import { CATALOG, fitsChassis, fmtPrice } from '../store/catalog';
 import { ensureAudio, powerThunk, relayTick } from '../ui/sound';
+import { currentLang, initLang } from '../ui/lang';
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string): T =>
   document.getElementById(id) as T;
@@ -38,8 +39,15 @@ function tickClock(): void {
   $('sclock').textContent = `${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
 }
 tickClock(); setInterval(tickClock, 1000);
-const baseTicker = 'INFINITY MIRROR WORKS ・ IM-∞88 LIGHT ENGINE ・ インフィニティ・ミラー ・ CUSTOM INFINITY HEADLIGHTS + TAILS ・ 10-DAY BUILDS ・ $300 APPOINTMENT ・ PRESS IGN TO ENTER THE MIRROR ・ GS400 BLUEPRINT LIVE IN THE LAB ・ 光 ・ ';
-$('ticker').textContent = baseTicker.repeat(2);
+const tickerFor = (lang: string): string =>
+  'INFINITY MIRROR WORKS ・ IM-∞88 LIGHT ENGINE ・ ' +
+  (lang === 'en' ? 'INFINITY MIRROR' : 'インフィニティ・ミラー') +
+  ' ・ CUSTOM INFINITY HEADLIGHTS + TAILS ・ 10-DAY BUILDS ・ $300 APPOINTMENT ・ PRESS IGN TO ENTER THE MIRROR ・ GS400 BLUEPRINT LIVE IN THE LAB ・ ' +
+  (lang === 'en' ? 'LIGHT' : '光') + ' ・ ';
+$('ticker').textContent = tickerFor(currentLang()).repeat(2);
+document.addEventListener('im:lang', ((e: CustomEvent<string>) => {
+  $('ticker').textContent = tickerFor(e.detail).repeat(2);
+}) as EventListener);
 
 /* ── ignition ── */
 const pwrBtn = $('pwr');
@@ -244,3 +252,5 @@ function loop(now: number): void {
   requestAnimationFrame(loop);
 }
 requestAnimationFrame(loop);
+
+initLang();

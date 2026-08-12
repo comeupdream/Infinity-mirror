@@ -19,7 +19,7 @@ export function mountFitment(host: HTMLElement): void {
         <select data-f="model" disabled><option value="">—</option></select></label>
     </div>
     <div class="fit-vinrow">
-      <label class="fit-field vin"><span>VIN PLATE · 車台番号</span>
+      <label class="fit-field vin"><span>VIN PLATE · <span class="jx" data-en="CHASSIS NO.">車台番号</span></span>
         <input data-f="vin" maxlength="17" spellcheck="false" autocomplete="off"
           placeholder="17 CHARACTERS — DECODES YOUR CHASSIS" /></label>
       <button class="hbtn" data-f="decode">DECODE</button>

@@ -12,6 +12,7 @@ import {
   cartTotal, lineUnitPrice, mailtoHref, setQty, watchCart,
 } from './cart';
 import { ensureAudio, relayTick } from '../ui/sound';
+import { initLang } from '../ui/lang';
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string): T =>
   document.getElementById(id) as T;
@@ -126,3 +127,5 @@ $('fitsOnly').addEventListener('click', () => {
 renderGarage();
 renderGrid();
 renderSheet();
+
+initLang();

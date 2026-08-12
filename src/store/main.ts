@@ -51,6 +51,23 @@ function renderGrid(): void {
     </div>`).join('');
 }
 
+/* live price: the card's label re-prices the moment a dance tier is
+   picked — before anything touches the build sheet */
+$('grid').addEventListener('change', (e) => {
+  const sel = (e.target as HTMLElement).closest<HTMLSelectElement>('[data-opt]');
+  if (!sel) return;
+  ensureAudio(); relayTick();
+  const card = sel.closest<HTMLElement>('.prod')!;
+  const p = bySlug(card.dataset.slug!)!;
+  const delta = p.options?.[sel.selectedIndex]?.priceDelta ?? 0;
+  const pr = card.querySelector<HTMLElement>('.pr');
+  if (!pr) return;
+  pr.textContent = fmtPrice(p.price + delta);
+  pr.classList.remove('bump');
+  void pr.offsetWidth;                 // restart the pulse
+  pr.classList.add('bump');
+});
+
 $('grid').addEventListener('click', (e) => {
   const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-add]');
   if (!btn) return;

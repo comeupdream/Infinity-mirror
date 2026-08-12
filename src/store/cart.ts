@@ -118,8 +118,9 @@ export function buildSheetText(garageLabel: string | null): string {
     `TOTAL: ${fmtUSD(cartGrand())}`,
     garageLabel ? `VEHICLE: ${garageLabel}` : 'VEHICLE: (add your chassis / VIN)',
     '',
-    'Taillights not included — I will ship my cores. 1-year warranty.',
-    'Draft quote request — build queue confirmed by reply.',
+    'Taillights not included — I will ship my cores (or source in Japan). 1-year warranty.',
+    'Please confirm the current queue / start date. I understand the $300',
+    'appointment deposit locks the slot and builds run 10 days from start.',
   ].join('\n');
 }
 

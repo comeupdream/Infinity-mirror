@@ -87,6 +87,11 @@
   .total b{font-family:var(--font-pixel);font-size:26px;font-weight:400;color:var(--amber);text-shadow:0 0 10px var(--amber-glow);}
   .sheetcard .cta{margin-top:4px;justify-content:center;}
   .copyok{font-size:10px;letter-spacing:.14em;color:var(--ok);min-height:14px;}
+  .flowcard{border-top:1px solid var(--edge-lo);padding-top:10px;display:flex;flex-direction:column;gap:7px;}
+  .fstep{display:flex;gap:9px;font-size:10.5px;color:var(--silk);line-height:1.5;}
+  .fstep b{font-family:var(--font-pixel);font-size:17px;color:var(--bp);font-weight:400;text-shadow:0 0 8px var(--bp-glow);}
+  .fstep i{font-style:normal;color:var(--etch);letter-spacing:.06em;}
+  .fnote{font-size:9.5px;letter-spacing:.14em;color:var(--amber);opacity:.85;}
   .empty{font-size:11px;color:var(--silk);letter-spacing:.08em;padding:14px 0;text-align:center;}
 </style>
 
@@ -121,6 +126,14 @@
       <a class="cta" id="quoteBtn" href="#">REQUEST BUILD QUOTE →</a>
       <button class="cta wire" id="copyBtn">COPY SHEET</button>
       <span class="copyok" id="copyOk"></span>
+      <div class="flowcard" aria-label="Order flow">
+        <span class="sub">ORDER FLOW ・ 順序</span>
+        <div class="fstep"><b>01</b><span><i>ORDER ACCEPTED</i> — sheet in; current queue confirmed before anything else</span></div>
+        <div class="fstep"><b>02</b><span><i>APPOINTMENT MONEY · $300</i> — PayPal deposit locks the slot. Include your name + address with payment</span></div>
+        <div class="fstep"><b>03</b><span><i>DESIGN CREATION</i> — your lamp drawn up and approved before a single cut</span></div>
+        <div class="fstep"><b>04</b><span><i>BUILD · 10 DAYS</i> — work starts once the custom price is confirmed; complete in 10 days from start</span></div>
+        <div class="fnote">CORES: SHIP YOURS — OR SOURCED IN JAPAN FOR YOU</div>
+      </div>
       <span style="font-size:9.5px;color:var(--silk);line-height:1.6;">
         Taillights not included — ship your cores. Flat $80 shipping ·
         1-year warranty. Checkout is a draft quote; build queue confirmed

@@ -38,7 +38,7 @@ function tickClock(): void {
   $('sclock').textContent = `${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
 }
 tickClock(); setInterval(tickClock, 1000);
-const baseTicker = 'INFINITY MIRROR WORKS ・ IM-∞88 LIGHT ENGINE ・ インフィニティ・ミラー ・ CUSTOM INFINITY HEADLIGHTS + TAILS ・ PRESS IGN TO ENTER THE MIRROR ・ GS400 BLUEPRINT LIVE IN THE LAB ・ 光 ・ ';
+const baseTicker = 'INFINITY MIRROR WORKS ・ IM-∞88 LIGHT ENGINE ・ インフィニティ・ミラー ・ CUSTOM INFINITY HEADLIGHTS + TAILS ・ 10-DAY BUILDS ・ $300 APPOINTMENT ・ PRESS IGN TO ENTER THE MIRROR ・ GS400 BLUEPRINT LIVE IN THE LAB ・ 光 ・ ';
 $('ticker').textContent = baseTicker.repeat(2);
 
 /* ── ignition ── */
